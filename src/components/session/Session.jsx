@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import PropTypes from "prop-types";
 import useCreateSession from "../../hooks/useCreateSession"
 import useBrowserFingerprint from "../../hooks/useBrowserFingerprint";
@@ -7,28 +7,19 @@ const Session = props => {
   const createSessionResponse = useCreateSession(props.session_id);
   const browserFingerprintResponse = useBrowserFingerprint();
 
-  let response = (
+  useEffect(() => {
+    if (createSessionResponse.complete && browserFingerprintResponse.complete) {
+      console.log("Session ID: " + createSessionResponse.data.session_id);
+      console.log("Browser ID: " + browserFingerprintResponse.data.browser_id);
+    }
+  }, [createSessionResponse, browserFingerprintResponse]);
+
+  return (
     <div>
       <h1><strong>Session ID:</strong>Nope</h1>
       <h1><strong>Browser ID:</strong>{props.browser_id}</h1>
     </div>
   );
-
-  useEffect(() => {
-    if(createSessionResponse.complete && browserFingerprintResponse.complete) {
-      response = (
-        <div>
-          <h1><strong>Session ID:</strong>{createSessionResponse.data.session_id}</h1>
-          <h1><strong>Browser ID:</strong>{browserFingerprintResponse.data.browser_id}</h1>
-        </div>
-      );
-    }
-  });
-
-  return response;
-};
-
-  return response;
 };
 
 Session.propTypes = {
