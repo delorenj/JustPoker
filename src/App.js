@@ -2,6 +2,12 @@ import logo from './logo.svg';
 import './App.css';
 import Amplify, { PubSub } from 'aws-amplify';
 import { AWSIoTProvider } from '@aws-amplify/pubsub/lib/Providers';
+import Session from './components/session'
+import {
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
 
 Amplify.configure({
   Auth: {
@@ -16,7 +22,6 @@ Amplify.configure({
 Amplify.addPluggable(new AWSIoTProvider({
   aws_pubsub_region: 'us-east-1',
   aws_pubsub_endpoint: 'wss://a2vj8u89yznrga-ats.iot.us-east-1.amazonaws.com/mqtt'
-  //aws_pubsub_endpoint: 'wss://a2vj8u89yznrga-ats.iot.us-east-1.amazonaws.com/mqtt'
 }));
 
 PubSub.subscribe('justpoker').subscribe({
@@ -25,21 +30,19 @@ PubSub.subscribe('justpoker').subscribe({
   close: () => console.log('Done'),
 });
 
-console.log("identityPoolId: " + process.env.REACT_APP_IDENTITY_POOL_ID)
-
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Messages Received:
-        </p>
+        <Link to={"session"}>
+          <button>Start new session</button>
+        </Link>
       </header>
       <main>
-        <ul>
-          <li>Check the console...</li>
-        </ul>
+        <Routes>
+          <Route path="/session" element={<Session/>} />
+        </Routes>
       </main>
     </div>
   );
