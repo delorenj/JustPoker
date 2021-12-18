@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const useCreateSession = session_id => {
+const useBrowserFingerprint = () => {
   const [response, setResponse] = useState({
     data: null,
     loading: true,
@@ -22,7 +22,7 @@ const useCreateSession = session_id => {
   useEffect(() => {
     setResponse({
       data: {
-        session_id: session_id || generate_id(),
+        browser_id: generate_id()
       },
       loading: false,
       complete: true,
@@ -33,4 +33,4 @@ const useCreateSession = session_id => {
   return response;
 };
 
-export default useCreateSession;
+export default useBrowserFingerprint;
