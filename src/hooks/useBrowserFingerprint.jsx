@@ -8,6 +8,16 @@ const useBrowserFingerprint = () => {
     error: false
   });
 
+  const [browser_id, set_browser_id] = useState(() => {
+    const key = "justpoker_browser_id";
+    let saved_browser_id = localStorage.getItem(key);
+    if(!saved_browser_id) {
+      saved_browser_id = generate_id();
+      localStorage.setItem(key, saved_browser_id);
+    }
+    return saved_browser_id;
+  });
+
   const generate_id = () => {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -16,13 +26,14 @@ const useBrowserFingerprint = () => {
       result += characters.charAt(Math.floor(Math.random() *
         charactersLength));
     }
+    set_browser_id(result);
     return result;
   };
 
   useEffect(() => {
     setResponse({
       data: {
-        browser_id: generate_id()
+        browser_id
       },
       loading: false,
       complete: true,
